@@ -33,6 +33,7 @@ var (
     device string //eth0
     debug        = flag.Bool("debug", true, "print packet details")
     showip       = flag.Bool("ipaddr", false, "display ip address")
+    reset        = flag.Bool("reset", false, "reset LEDs")
     narp         = flag.Bool("narp", false, "disable arp")
     ntcp         = flag.Bool("ntcp", false, "disable tcp")
     nudp         = flag.Bool("nudp", false, "disable udp")
@@ -67,7 +68,7 @@ var (
 )
 
 func main() {
-    // option flag
+    // Option flag
     flag.IntVar(&speed, "speed", 1, "set speed of flowing packet")
     flag.StringVar(&device, "device", "eth0", "set network interface")
     flag.Parse()
@@ -84,14 +85,6 @@ func main() {
     meta.show = !*nudp
     layerMap["UDP"] = meta
 
-    // set ipAddress
-    ipv4Addr, ipv6Addr, err := externalIP()
-	if err != nil { log.Fatal(err) }
-    if *debug {
-        fmt.Println("IPv4 address:", ipv4Addr)
-        fmt.Println("IPv6 address:", ipv6Addr)
-    }
-
     // Open device
     handle, err := pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
     if err != nil { log.Fatal(err) }
@@ -101,49 +94,65 @@ func main() {
     errl := ws2811.Init(pin, count, brightness)
     if errl != nil { log.Fatal(errl) }
     defer ws2811.Fini()
-    if *debug { fmt.Println("Press Ctr-C to quit.") }
 
     led := make([]uint32, count)
 
+    if *reset {
+        resetLeds(led)
+        os.Exit(0)
+    }
+
+    // Set IP Address
+    ipv4Addr, ipv6Addr, err := externalIP()
+    if err != nil { log.Fatal(err) }
+    if *debug {
+        fmt.Println("IPv4 address:", ipv4Addr)
+        fmt.Println("IPv6 address:", ipv6Addr)
+    }
+
     if *showip {
         showIPAddress(led, ipv4Addr)
-    }else{
-        // Use the handle as a packet source to process all packets
-        packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
-        if *debug { fmt.Println("Start capturing...") }
+        os.Exit(0)
+    }
 
-        for packet := range packetSource.Packets() {
-            if *debug { fmt.Println("----------------") }
+    // Use the handle as a packet source to process all packets
+    packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
+    if *debug {
+        fmt.Println("Press Ctr-C to quit.")
+        fmt.Println("Start capturing...")
+    }
 
-            // Direction of the packet
-            reverse := true
-            if net := packet.NetworkLayer(); net != nil {
-                src, _ := net.NetworkFlow().Endpoints()
-                if strings.Contains(src.String(), ipv4Addr) || strings.Contains(src.String(), ipv6Addr) {
-                    reverse = false
-                }
+    for packet := range packetSource.Packets() {
+        if *debug { fmt.Println("----------------") }
+
+        // Direction of the packet
+        reverse := true
+        if net := packet.NetworkLayer(); net != nil {
+            src, _ := net.NetworkFlow().Endpoints()
+            if strings.Contains(src.String(), ipv4Addr) || strings.Contains(src.String(), ipv6Addr) {
+                reverse = false
             }
+        }
 
-            packetName := categorizePacket(packet)
-            layerMeta := layerMap[packetName]
+        packetName := categorizePacket(packet)
+        layerMeta := layerMap[packetName]
 
-            if *debug {
-                fmt.Println(packetName)
-                fmt.Println(packet)
-            }
+        if *debug {
+            fmt.Println(packetName)
+            fmt.Println(packet)
+        }
 
-            packetTime := packet.Metadata().Timestamp
-            nowTime := time.Now()
-            diffTime := nowTime.Sub(packetTime)
-            if *debug { fmt.Println("delay:", diffTime) }
-            if diffTime > 5 * time.Second {
-                if *debug { fmt.Println("skip\n") }
-                continue
-            }
+        packetTime := packet.Metadata().Timestamp
+        nowTime := time.Now()
+        diffTime := nowTime.Sub(packetTime)
+        if *debug { fmt.Println("delay:", diffTime) }
+        if diffTime > 5 * time.Second {
+            if *debug { fmt.Println("skip\n") }
+            continue
+        }
 
-            if layerMeta.show {
-                castPacket(led, series, layerMeta.color, reverse)
-            }
+        if layerMeta.show {
+            castPacket(led, series, layerMeta.color, reverse)
         }
     }
 }
@@ -264,6 +273,17 @@ func showIPAddress(led []uint32, ipaddr string) {
 		// period
 		led[(i+1) * 9 - 1] = colors[1]
 	}
+    setLeds(led)
+    err := ws2811.Render()
+    if err != nil {
+        ws2811.Clear()
+        fmt.Println("Error during wipe " + err.Error())
+        os.Exit(-1)
+    }
+}
+
+func resetLeds(led []uint32) {
+    initLeds(led)
     setLeds(led)
     err := ws2811.Render()
     if err != nil {

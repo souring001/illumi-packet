@@ -9,7 +9,7 @@
 ### 必要なもの
 |材料|量|諸注意|
 |:-|-:|:-|
-|LEDテープ(WS281B)|1m|個別アドレス可能・フルカラーなもの．144LEDs/m 推奨．|
+|LEDテープ(WS281B)|1m|個別アドレス可能・フルカラーのもの．144LEDs/m 推奨．|
 |Raspberry Pi|1台|動作確認: Raspberry Pi 3|
 |LANケーブル|1m||
 |ジャンパ線 オス-メス|3本||
@@ -118,12 +118,13 @@ Ctrl+Cで終了します．
 |オプション|内容|
 |:-|:-|
 |-h|オプションの説明|
-|-debug |パケット情報等の詳細を表示する(デフォルトは`true`)|
+|-debug |パケット情報等の詳細を出力する(デフォルトは`true`)|
 |-device [string]|ネットワークインターフェースを設定(デフォルトは`eth0`)|
 |-speed [int]|パケットの流れる速度を設定(デフォルトは`1`)|
 |-narp|ARPを表示しない|
 |-ntcp|TCPを表示しない|
 |-nudp|UDPを表示しない|
+|-reset|点灯中のLEDの表示を消す|
 |-ipaddr|IPアドレスをLEDに表示する|
 
 #### 例
@@ -135,7 +136,7 @@ $ sudo ./illumi-packet -nudp -ntcp
 
 <br>
 
-パケット情報等の詳細を表示しない．
+パケット情報等の詳細を出力しない．
 
 ```sh
 $ sudo ./illumi-packet -debug=false
@@ -155,3 +156,8 @@ IPアドレスをLEDに表示する．
 $ sudo ./illumi-packet -ipaddr
 ```
 ![showipaddress](https://user-images.githubusercontent.com/29009733/70908359-5e4f1380-204e-11ea-9187-a2d385c9f300.JPG)
+
+LEDの表示を消す．
+```sh
+$ sudo ./illumi-packet -reset
+```
