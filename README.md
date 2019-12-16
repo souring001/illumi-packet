@@ -8,17 +8,17 @@
 
 ### 必要なもの
 |材料|量|諸注意|
-|:-:|:-:|:-:|
+|:-|-:|:-|
 |LEDテープ(WS281B)|1m|個別アドレス可能・フルカラーなもの．144LEDs/m 推奨．|
 |Raspberry Pi|1台|動作確認: Raspberry Pi 3|
 |LANケーブル|1m||
 |ジャンパ線 オス-メス|3本||
 |結束バンド|4本||
 
-そのほかに、キーボード、ディスプレイ、HDMIケーブル、ルータ等はご用意ください。
+そのほかに，キーボード，ディスプレイ，HDMIケーブル，ルータ等はご用意ください．
 
 ### 環境設定
-動作には以下の環境が必要です。
+動作には以下の環境が必要です．
 * golang
 * libpcap
 * SCons
@@ -28,11 +28,11 @@
 
 #### golangのインストール
 
-実行するプログラムはgo言語で記述されています。
+実行するプログラムはgo言語で記述されています．
 
-https://golang.org/doc/install#install に従ってインストールします。
+https://golang.org/doc/install#install に従ってインストールします．
 
-以下のようにターミナルで実行し、最後にバージョンが表示されることを確認してください。
+以下のようにターミナルで実行し，最後にバージョンが表示されることを確認してください．
 
 ```sh
 $ version=1.13.4
@@ -47,23 +47,23 @@ go version go1.13.4 linux/arm
 ```
 
 #### libpcapのインストール
-プログラムからパケットキャプチャを行うためにlibpcapをインストールします。
+プログラムからパケットキャプチャを行うためにlibpcapをインストールします．
 
 ```sh
 $ sudo apt-get install libpcap-dev
 ```
 
 #### SConsのインストール
-rpi_ws281xをビルドするためにSConsをインストールします。
+rpi_ws281xをビルドするためにSConsをインストールします．
 
 ```sh
 $ sudo apt-get install scons
 ```
 
 #### rpi_ws281xのインストール
-LEDテープはrpi_ws281xというライブラリで操作します。
+LEDテープはrpi_ws281xというライブラリで操作します．
 
-https://github.com/jgarff/rpi_ws281x に従ってインストールします。
+https://github.com/jgarff/rpi_ws281x に従ってインストールします．
 
 ```sh
 $ git clone https://github.com/jgarff/rpi_ws281x.git
@@ -75,14 +75,14 @@ $ sudo cp -ai ./libws2811.a /usr/local/lib/
 ```
 
 #### イルミパケットのソースコード
-このリポジトリのソースコードを適当なディレクトリにダウンロードします。
+このリポジトリのソースコードを適当なディレクトリにダウンロードします．
 
 ```sh
 $ git clone https://github.com/souring001/illumi-packet.git
 $ cd illumi-packet
 ```
 
-LEDの個数によって`illumi-packet.go`の以下の変数を適宜変更してください。
+LEDの個数によって`illumi-packet.go`の以下の変数を適宜変更してください．
 
 | LEDの個数 | count | speed | series |
 | --------:| -----:| -----:| ------:|
@@ -91,7 +91,7 @@ LEDの個数によって`illumi-packet.go`の以下の変数を適宜変更し�
 
 ## LANケーブルの作り方
 
-1. LANケーブルにLEDテープを乗せて、結束バンドで固定する。
+1. LANケーブルにLEDテープを乗せて，結束バンドで固定する．
 2. ジャンパワイヤ(オス側)を挿し込む
 3. メス側を Raspberry Pi のGPIOの2(5V), 6(GND), 12(信号) に挿し込む
 4. Raspberry Piとルータに接続する
@@ -99,7 +99,7 @@ LEDの個数によって`illumi-packet.go`の以下の変数を適宜変更し�
 ![GPIO](https://user-images.githubusercontent.com/29009733/70908199-f7315f00-204d-11ea-9cb0-256967c7ca5e.png)
 
 ## ビルド方法
-ソースコードを変更するたびにビルドをする必要があります。
+ソースコードを変更するたびにビルドをする必要があります．
 
 ```sh
 $ go build illumi-packet.go
@@ -110,6 +110,8 @@ $ go build illumi-packet.go
 ```sh
 $ sudo ./illumi-packet
 ```
+
+Ctrl+Cで終了します．
 
 ### オプション
 
@@ -124,9 +126,32 @@ $ sudo ./illumi-packet
 |-nudp|UDPを表示しない|
 |-ipaddr|IPアドレスをLEDに表示する|
 
-例: IPアドレスをLEDに表示
+#### 例
+
+TCP, UDPのパケットを表示しない．
+```sh
+$ sudo ./illumi-packet -nudp -ntcp
+```
+
+<br>
+
+パケット情報等の詳細を表示しない．
+
+```sh
+$ sudo ./illumi-packet -debug=false
+```
+
+<br>
+
+Wi-Fiの通信を可視化する．
+```sh
+$ sudo ./illumi-packet -device wlan0
+```
+
+<br>
+
+IPアドレスをLEDに表示する．
 ```sh
 $ sudo ./illumi-packet -ipaddr
 ```
-結果:
 ![showipaddress](https://user-images.githubusercontent.com/29009733/70908359-5e4f1380-204e-11ea-9187-a2d385c9f300.JPG)
