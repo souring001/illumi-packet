@@ -1,5 +1,9 @@
 # ILLUMI-PACKET
 
+パケットが光るLANケーブル
+
+![illumi-packet](https://user-images.githubusercontent.com/29009733/70907987-8ab66000-204d-11ea-86e2-09a34d7c557a.jpg)
+
 ## 準備
 
 ### 必要なもの
@@ -89,9 +93,10 @@ LEDの個数によって`illumi-packet.go`の以下の変数を適宜変更し�
 
 1. LANケーブルにLEDテープを乗せて、結束バンドで固定する。
 2. ジャンパワイヤ(オス側)を挿し込む
-3. メス側を Raspberry Pi のGPIO に挿し込む
+3. メス側を Raspberry Pi のGPIOの2(5V), 6(GND), 12(信号) に挿し込む
 4. Raspberry Piとルータに接続する
 
+![GPIO](https://user-images.githubusercontent.com/29009733/70908199-f7315f00-204d-11ea-9cb0-256967c7ca5e.png)
 
 ## ビルド方法
 ソースコードを変更するたびにビルドをする必要があります。
@@ -124,3 +129,4 @@ $ sudo ./illumi-packet
 $ sudo ./illumi-packet -ipaddr
 ```
 結果:
+![showipaddress](https://user-images.githubusercontent.com/29009733/70908359-5e4f1380-204e-11ea-9187-a2d385c9f300.JPG)
