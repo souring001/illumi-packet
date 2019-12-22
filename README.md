@@ -1,6 +1,6 @@
 # ILLUMI-PACKET
 
-パケットが光るLANケーブル
+イルミパケット: 通信パケットを可視化するLANケーブル
 
 ![illumi-packet](https://user-images.githubusercontent.com/29009733/70907987-8ab66000-204d-11ea-86e2-09a34d7c557a.jpg)
 
@@ -96,7 +96,10 @@ LEDの個数によって`illumi-packet.go`の以下の変数を適宜変更し�
 3. メス側を Raspberry Pi のGPIOの2(5V), 6(GND), 12(信号) に挿し込む
 4. Raspberry Piとルータに接続する
 
+![GPIO_Outline](https://user-images.githubusercontent.com/29009733/71317350-aba20980-24c2-11ea-8a59-47388f5b2d73.png)
+
 ![GPIO](https://user-images.githubusercontent.com/29009733/70908199-f7315f00-204d-11ea-9cb0-256967c7ca5e.png)
+
 
 ## ビルド方法
 ソースコードを変更するたびにビルドをする必要があります．
@@ -161,3 +164,6 @@ LEDの表示を消す．
 ```sh
 $ sudo ./illumi-packet -reset
 ```
+
+## LICENSE
+for non-commercial scientific research purposes
