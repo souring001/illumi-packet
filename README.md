@@ -182,13 +182,7 @@ $ sudo ./illumi-packet -reset
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
 <br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">ILLUMI PACKET</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Kohei Aso</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
-Permission: Modification, Distribution, Commercial use
-<br />Conditions: Copyright notice
-
 Please contact me if you do not want to give credit.
-
-ILLUMI PACKET
-<br />Copyright (c) 2019, Kohei Aso
 
 <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">麻生 航平</span> 作『<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">イルミパケット</span>』は<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">クリエイティブ・コモンズ 表示 4.0 国際 ライセンス</a>で提供されています。
 
@@ -202,3 +196,7 @@ ILLUMI PACKET
 
 Twitter: [@souring001](https://twitter.com/souring001)
 <br>Email: titechei\<_at_\>yahoo.co.jp
+
+
+ILLUMI PACKET
+<br />Copyright (c) 2019, Kohei Aso
