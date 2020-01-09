@@ -22,10 +22,9 @@ You also need a keyboard, display, wired network, etc.
 
 ### Assembly
 
-1. LANケーブルにLEDテープを乗せて，結束バンドで固定する．
-2. ジャンパワイヤ(オス側)を挿し込む
-3. メス側を Raspberry Pi のGPIOの2(5V), 6(GND), 12(信号) に挿し込む
-4. Raspberry Piとルータに接続する
+1. Connect an LED strip to the GPIO of a Raspberry Pi.
+2. Fix it to an Ethernet cable.
+3. Connect one end of the Ethernet cable with the Raspberry Pi and the other end with several wired network access points.
 
 ![GPIO_Outline](https://user-images.githubusercontent.com/29009733/71317350-aba20980-24c2-11ea-8a59-47388f5b2d73.png)
 
