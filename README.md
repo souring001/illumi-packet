@@ -2,6 +2,8 @@
 
 Illuminating Packets on an Ethernet Cable using LED Strip.
 
+[日本語](https://github.com/souring001/illumi-packet/blob/master/README_JP.md)
+
 ![illumi-packet](https://user-images.githubusercontent.com/29009733/70907987-8ab66000-204d-11ea-86e2-09a34d7c557a.jpg)
 
 A packet is visualized by LED lights as it flows in the transmission direction.
