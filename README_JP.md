@@ -192,7 +192,6 @@ $ sudo ./illumi-packet -reset
 ## CONTACT
 
 Twitter: [@souring001](https://twitter.com/souring001)
-<br>Email: titechei\<_at_\>yahoo.co.jp
 
 
 ILLUMI PACKET
