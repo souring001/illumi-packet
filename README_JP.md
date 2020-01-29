@@ -1,8 +1,10 @@
-# ILLUMI PACKET
+# イルミパケット
 
-イルミパケット: 通信パケットを可視化するLANケーブル
+通信パケットを可視化するLANケーブル
 
 ![illumi-packet](https://user-images.githubusercontent.com/29009733/70907987-8ab66000-204d-11ea-86e2-09a34d7c557a.jpg)
+
+[動画 (YouTube)](https://youtu.be/5yJyNpHeRzg)
 
 ## 概要
 
