@@ -103,11 +103,12 @@ func main() {
     }
 
     // Set IP Address
-    ipv4Addr, ipv6Addr, err := externalIP()
+    ipv4Addr, ipv6Addr, macAddr, err := externalIP()
     if err != nil { log.Fatal(err) }
     if *debug {
         fmt.Println("IPv4 address:", ipv4Addr)
         fmt.Println("IPv6 address:", ipv6Addr)
+        fmt.Println("MAC address:", macAddr)
     }
 
     if *showip {
@@ -128,10 +129,18 @@ func main() {
         // Direction of the packet
         reverse := true
         if net := packet.NetworkLayer(); net != nil {
-            src, _ := net.NetworkFlow().Endpoints()
-            if strings.Contains(src.String(), ipv4Addr) || strings.Contains(src.String(), ipv6Addr) {
+            src, _ := net.NetworkFlow().Endpoints().String()
+            if strings.Contains(src, ipv4Addr) || strings.Contains(src, ipv6Addr) {
                 reverse = false
             }
+        }
+
+        if arpLayer := packet.Layer(layers.LayerTypeARP); arpLayer != nil {
+          arp := arpLayer.(*layers.ARP)
+          src := net.HardwareAddr(arp.SourceHwAddress).String()
+          if strings.Contains(src, macAddr) {
+              reverse = false
+          }
         }
 
         packetName := categorizePacket(packet)
@@ -215,20 +224,23 @@ func isAnomaly(packet gopacket.Packet) bool {
     return anml
 }
 
-func externalIP() (string, string, error) {
-    ifaces, err := net.Interfaces()
+func externalIP() (string, string, string, error) {
+  ifaces, err := net.Interfaces()
 	if err != nil {
-		return "", "", err
+    return "", "", "", err
 	}
-    var ipv4Addr net.IP
-    var ipv6Addr net.IP
+  var ipv4Addr net.IP
+  var ipv6Addr net.IP
+  var macAddr string
+
 	for _, iface := range ifaces {
-        if iface.Name != device {
-            continue // select device "eth0" or something
-        }
+    if iface.Name != device {
+      continue // select device "eth0" or something
+    }
+    macAddr = iface.HardwareAddr.String()
 		addrs, err := iface.Addrs()
 		if err != nil {
-			return "", "", err
+      return "", "", "", err
 		}
 		for _, addr := range addrs {
 			var ip net.IP
@@ -247,12 +259,13 @@ func externalIP() (string, string, error) {
 				ipv6Addr = ipv6
 			}
 		}
-    }
-    if ipv4Addr == nil{
-        return "", "", errors.New("are you connected to the network?")
-    }else{
-        return ipv4Addr.String(), ipv6Addr.String(), nil
-    }
+  }
+
+  if ipv4Addr == nil{
+    return "", "", "", errors.New("are you connected to the network?")
+  }else{
+    return ipv4Addr.String(), ipv6Addr.String(), macAddr, nil
+  }
 }
 
 func showIPAddress(led []uint32, ipaddr string) {
