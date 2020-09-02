@@ -129,16 +129,16 @@ func main() {
         // Direction of the packet
         reverse := true
         if net := packet.NetworkLayer(); net != nil {
-            src, _ := net.NetworkFlow().Endpoints().String()
-            if strings.Contains(src, ipv4Addr) || strings.Contains(src, ipv6Addr) {
+            src, _ := net.NetworkFlow().Endpoints()
+            if strings.Contains(src.String(), ipv4Addr) || strings.Contains(src.String(), ipv6Addr) {
                 reverse = false
             }
         }
 
         if arpLayer := packet.Layer(layers.LayerTypeARP); arpLayer != nil {
           arp := arpLayer.(*layers.ARP)
-          src := net.HardwareAddr(arp.SourceHwAddress).String()
-          if strings.Contains(src, macAddr) {
+          src := net.HardwareAddr(arp.SourceHwAddress)
+          if strings.Contains(src.String(), macAddr) {
               reverse = false
           }
         }
