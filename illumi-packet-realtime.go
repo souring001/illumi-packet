@@ -23,7 +23,7 @@ type layerMeta struct{
 const (
     ipv4Len    = 4
     pin        = 18     // GPIO
-    series     = 12     // length of trail
+    series     = 36     // length of trail
     count      = 72    // number of LEDs
     brightness = 50     // max 255
 )
@@ -69,7 +69,7 @@ var (
 
 func main() {
     // Option flag
-    flag.IntVar(&speed, "speed", 1, "set speed of flowing packet")
+    flag.IntVar(&speed, "speed", 36, "set speed of flowing packet")
     flag.StringVar(&device, "device", "eth0", "set network interface")
     flag.Parse()
 
